@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:02:50 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/09/27 21:09:46 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/09/29 13:09:39 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ void	thread_init(t_data *data, t_philo *philo)
 	int i;
 
 	i = -1;
+	data->start_time = get_current_time();
 	while (++i < data->number_of_philos)
 	{
+		philo[i].right_fork = &data->forks[(i + 1) % data->number_of_philos];
 		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
-		pthread_join(philo[i].thread, NULL);
 	}
 	i = -1;
 	while (++i < data->number_of_philos)
-		data->start_time = get_current_time();
+		pthread_join(philo[i].thread, NULL);
 }
 
