@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:53 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/09/29 12:01:23 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/05 10:24:30 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,31 @@
 #include <pthread.h>
 #include <sys/time.h>
 
+
 typedef struct s_data
 {
+	pthread_t		monitor;
 	int		number_of_philos;
-	int		time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
-	int		num_times_to_eat;
-	size_t	start_time;
+	size_t			start_time;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	int				num_times_to_eat;
+	int				philo_died;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t action;
-	int		philo_died;
+	pthread_mutex_t	action;
 }				t_data;
 
 typedef struct s_philo
 {
-	pthread_t thread;
-	int		id;
-	int		meals_eaten;
-	int		last_meal;
-	pthread_mutex_t *left_fork;
-	pthread_mutex_t *right_fork;
-	t_data *data;
+	pthread_t		thread;
+	int				id;
+	int				meals_eaten;
+	size_t			last_meal;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	meal;
+	t_data			*data;
 }		t_philo;
 
 
@@ -52,7 +55,9 @@ void			init_philos(t_philo *philo, t_data *data);
 void			thread_init(t_data *data, t_philo *philo);
 void			*routine(void *);
 long int		get_current_time(void);
-int				ft_usleep(long miliseconds);
+void				ft_usleep(long miliseconds, t_philo *philo);
 void			message(char *str, t_philo *philo);
+void			take_forks(t_philo *philo);
+void			*check_if_dead(void *arg);
 
 #endif

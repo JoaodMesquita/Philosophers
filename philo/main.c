@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:34:31 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/09/29 14:17:59 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/02 14:49:11 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int	main(int ac, char **av)
 		return (1);
 	init_philos(philo, &data);
 	thread_init(&data, philo);
-	printf("Meals eaten: %d", philo->meals_eaten);
+
 	return(0);
 }

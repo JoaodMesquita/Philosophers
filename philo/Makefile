@@ -6,7 +6,7 @@
 #    By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/23 18:32:27 by jpmesquita        #+#    #+#              #
-#    Updated: 2025/09/27 10:32:54 by jpmesquita       ###   ########.fr        #
+#    Updated: 2025/10/06 11:53:00 by jpmesquita       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CC = cc
 
 RM = rm -f
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
 
 all: $(NAME)
 

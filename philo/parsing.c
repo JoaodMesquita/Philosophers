@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:48:14 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/09/25 10:54:15 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/01 13:04:53 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	time_values(char **av)
 	i = 2;
 	while (av[i])
 	{
-		if ((ft_atoi(av[i]) < 60 && i != 5))
+		if ((ft_atoi(av[i]) < 0 && i != 5))
 			return (0);
 		i++;
 	}
@@ -72,6 +72,7 @@ static int number_of_meals(int ac, char **av)
 	return (1);
 }
 
+
 int	check_args(int ac, char **av)
 {
 	if (ac < 5 || ac > 6)
@@ -81,7 +82,7 @@ int	check_args(int ac, char **av)
 	else if (!philos_max_number(av))
 		return(write(2, "Error\nPhilosophers must be 1-200\n", 33), 0);
 	else if (!time_values(av))
-		return(write(2, "Error\nTime values must be greater than 60ms\n", 45), 0);
+		return(write(2, "Error\nTime values must be greater than 0ms\n", 44), 0);
 	else if (!number_of_meals(ac, av))
 		return(write(2, "Error\nNumber of meals must be >= 0\n", 35), 0);
 	return (1);

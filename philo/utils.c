@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/09/29 12:01:04 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/05 10:24:05 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	ft_atoi(const char *nptr)
 	sign = 1;
 	res = 0;
 	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
-	{
 		i++;
-	}
 	if (nptr[i] == '-')
 	{
 		sign = -1;
@@ -40,14 +38,22 @@ int	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-int ft_usleep(long miliseconds)
+void	ft_usleep(long miliseconds, t_philo *philo)
 {
 	long start;
 
 	start = get_current_time();
 	while ((get_current_time() - start) < miliseconds)
+	{
+		pthread_mutex_lock(&philo->data->action);
+		if (philo->data->philo_died)
+		{
+			pthread_mutex_unlock(&philo->data->action);
+			return ;
+		}
+		pthread_mutex_unlock(&philo->data->action);
 		usleep(500);
-	return (0);
+	}
 }
 
 long int	get_current_time(void)
