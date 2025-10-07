@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/05 10:24:05 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/06 15:11:52 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,42 @@ void	ft_usleep(long miliseconds, t_philo *philo)
 
 long int	get_current_time(void)
 {
-	struct timeval current_time;
-
-	// obter tempo atual em milissegundos desde 1 de JAN 1970
+	struct timeval	current_time;
+	
 	gettimeofday(&current_time, NULL);
-	//1 seg = 1000ms
-	//1ms == 1000 micro segundos
 	return((current_time.tv_sec * 1000) + current_time.tv_usec / 1000); 
 }
 
 void	message(char *str, t_philo *philo)
 {
-	size_t timestamp;
+	size_t	timestamp;
 
 	pthread_mutex_lock(&philo->data->action);
 	timestamp = get_current_time() - philo->data->start_time;
-	printf("%ldms %d %s\n", timestamp, philo->id, str);
+	pthread_mutex_lock(&philo->data->message);
+	if (!philo->data->philo_died)
+	{
+		pthread_mutex_unlock(&philo->data->message);
+		printf("%ld %d %s\n", timestamp, philo->id, str);
+	}
+	pthread_mutex_unlock(&philo->data->message);
 	pthread_mutex_unlock(&philo->data->action);
+}
+void	destroy_all_mutexes(t_data *data, t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->number_of_philos)
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+		//free(&philo[i]);
+		i++;
+	}
+	free(data->forks);
+	pthread_mutex_destroy(&philo->meal);
+	free(philo);
+	pthread_mutex_destroy(&data->action);
+	pthread_mutex_destroy(&data->meals_qty);
+	pthread_mutex_destroy(&data->message);
 }

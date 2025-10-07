@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:53 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/05 10:24:30 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/06 15:09:01 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct s_data
 {
 	pthread_t		monitor;
-	int		number_of_philos;
+	int				number_of_philos;
 	size_t			start_time;
 	size_t			time_to_die;
 	size_t			time_to_eat;
@@ -32,6 +32,8 @@ typedef struct s_data
 	int				philo_died;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	action;
+	pthread_mutex_t message;
+	pthread_mutex_t meals_qty;
 }				t_data;
 
 typedef struct s_philo
@@ -59,5 +61,6 @@ void				ft_usleep(long miliseconds, t_philo *philo);
 void			message(char *str, t_philo *philo);
 void			take_forks(t_philo *philo);
 void			*check_if_dead(void *arg);
+void	destroy_all_mutexes(t_data *data, t_philo *philo);
 
 #endif

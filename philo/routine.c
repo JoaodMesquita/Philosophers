@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:32:15 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/06 11:02:40 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/07 11:07:02 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ static void	eating(t_philo *philo)
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&philo->meal);
 	ft_usleep(philo->data->time_to_eat, philo);
+	pthread_mutex_lock(&philo->data->meals_qty);
 	philo->meals_eaten++;
+	pthread_mutex_unlock(&philo->data->meals_qty);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -36,9 +38,9 @@ void take_forks(t_philo *philo)
 	}
 	else
 	{
-		pthread_mutex_lock(philo->left_fork);
-		message("has taken a fork", philo);
 		pthread_mutex_lock(philo->right_fork);
+		message("has taken a fork", philo);
+		pthread_mutex_lock(philo->left_fork);
 		message("has taken a fork", philo);
 	}
 }
@@ -96,11 +98,15 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->action);
+		pthread_mutex_lock(&philo->data->meals_qty);
 		if (philo->data->num_times_to_eat > 0 &&  philo->meals_eaten == philo->data->num_times_to_eat)
+		{
+			pthread_mutex_unlock(&philo->data->meals_qty);
 			break ;
+		}
+		pthread_mutex_unlock(&philo->data->meals_qty);
 		eating(philo);
 		sleeping(philo);
-	
 	}
 	return (NULL);
 }
