@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/06 15:11:52 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/07 14:03:17 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,7 @@ void	message(char *str, t_philo *philo)
 	timestamp = get_current_time() - philo->data->start_time;
 	pthread_mutex_lock(&philo->data->message);
 	if (!philo->data->philo_died)
-	{
-		pthread_mutex_unlock(&philo->data->message);
 		printf("%ld %d %s\n", timestamp, philo->id, str);
-	}
 	pthread_mutex_unlock(&philo->data->message);
 	pthread_mutex_unlock(&philo->data->action);
 }
@@ -87,7 +84,6 @@ void	destroy_all_mutexes(t_data *data, t_philo *philo)
 	while (i < data->number_of_philos)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
-		//free(&philo[i]);
 		i++;
 	}
 	free(data->forks);

@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:02:50 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/07 10:51:23 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/07 22:17:38 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,29 @@ void	thread_init(t_data *data, t_philo *philo)
 	int	i;
 
 	data->start_time = get_current_time();
-	i = -1;
-	while (++i < data->number_of_philos)
+	if (data->number_of_philos == 1)
 	{
-		if (data->number_of_philos == 1)
-		{
-			write(2, "Error\nFailed to create thread\n", 30); // isto está  errado lidar com apenas 1 philo
-			exit(0);
-		}
-		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
-		// criar uma if condition no caso de nao conseguir criar thread e retornar um exit mais free.
+		one_philo(data, philo);
+		return ;
 	}
+	i = -1;
+	while (++i < data->number_of_philos && data->number_of_philos > 1)
+		pthread_create(&philo[i].thread, NULL, &routine, &philo[i]);
 	pthread_create(&data->monitor, NULL, &check_if_dead, philo);
 	i = -1;
 	while (++i < data->number_of_philos)
 		pthread_join(philo[i].thread, NULL);
 	pthread_join(data->monitor, NULL);
+}
+
+void	one_philo(t_data *data, t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	message("has taken a fork", philo);
+	pthread_mutex_unlock(philo->left_fork);
+	ft_usleep(philo->data->time_to_die, philo);
+	message("died", &philo[0]);
+	pthread_mutex_lock(&data->action);
+	data->philo_died = 1;
+	pthread_mutex_unlock(&data->action);
 }

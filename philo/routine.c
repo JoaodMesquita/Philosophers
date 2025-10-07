@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:32:15 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/07 11:07:02 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/07 21:50:55 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	eating(t_philo *philo)
 	pthread_mutex_unlock(philo->left_fork);
 }
 
-void take_forks(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
@@ -55,13 +55,13 @@ static void	sleeping(t_philo *philo)
 void	*check_if_dead(void *arg)
 {
 	t_philo	*philo;
-	int	i;
+	int		i;
 	
 	philo = (t_philo*)arg;
-	while(!philo->data->philo_died)
+	while (!philo->data->philo_died)
 	{
-		i = 0;
-		while(i < philo->data->number_of_philos)
+		i = -1;
+		while (++i < philo->data->number_of_philos)
 		{
 			pthread_mutex_lock(&philo[i].meal);
 			if (get_current_time() - philo[i].last_meal >= philo->data->time_to_die)
@@ -74,7 +74,6 @@ void	*check_if_dead(void *arg)
 				return (NULL);
 			}
 			pthread_mutex_unlock(&philo[i].meal);
-			i++;
 		}
 		usleep(500);
 	}
@@ -98,13 +97,13 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->action);
-		pthread_mutex_lock(&philo->data->meals_qty);
+/* 		pthread_mutex_lock(&philo->data->meals_qty);
 		if (philo->data->num_times_to_eat > 0 &&  philo->meals_eaten == philo->data->num_times_to_eat)
 		{
 			pthread_mutex_unlock(&philo->data->meals_qty);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->data->meals_qty);
+		pthread_mutex_unlock(&philo->data->meals_qty); */
 		eating(philo);
 		sleeping(philo);
 	}

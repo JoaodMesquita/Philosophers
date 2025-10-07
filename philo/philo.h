@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:53 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/06 15:09:01 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/07 21:26:50 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void			init_philos(t_philo *philo, t_data *data);
 void			thread_init(t_data *data, t_philo *philo);
 void			*routine(void *);
 long int		get_current_time(void);
-void				ft_usleep(long miliseconds, t_philo *philo);
+void			ft_usleep(long miliseconds, t_philo *philo);
 void			message(char *str, t_philo *philo);
 void			take_forks(t_philo *philo);
 void			*check_if_dead(void *arg);
-void	destroy_all_mutexes(t_data *data, t_philo *philo);
+void			destroy_all_mutexes(t_data *data, t_philo *philo);
+void			one_philo(t_data *data, t_philo *philo);
 
 #endif
