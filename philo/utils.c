@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/07 14:03:17 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/08 12:33:17 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ int	ft_atoi(const char *nptr)
 
 void	ft_usleep(long miliseconds, t_philo *philo)
 {
-	long start;
-
-	start = get_current_time();
-	while ((get_current_time() - start) < miliseconds)
-	{
 		pthread_mutex_lock(&philo->data->action);
 		if (philo->data->philo_died)
 		{
@@ -52,8 +47,7 @@ void	ft_usleep(long miliseconds, t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->data->action);
-		usleep(500);
-	}
+		usleep(miliseconds);
 }
 
 long int	get_current_time(void)

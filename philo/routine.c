@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:32:15 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/07 21:50:55 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/08 14:27:30 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void	eating(t_philo *philo)
 {
+	size_t eat_time;
+
+	eat_time = philo->data->time_to_eat;
 	take_forks(philo);
 	message("is eating", philo);
 	pthread_mutex_lock(&philo->meal);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&philo->meal);
-	ft_usleep(philo->data->time_to_eat, philo);
+	ft_usleep((eat_time * 1000), philo);
 	pthread_mutex_lock(&philo->data->meals_qty);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->data->meals_qty);
@@ -47,9 +50,17 @@ void	take_forks(t_philo *philo)
 
 static void	sleeping(t_philo *philo)
 {
+	size_t die_time;
+	size_t sleep_time;
+	size_t eat_time;
+
+	die_time = philo->data->time_to_die;
+	sleep_time = philo->data->time_to_sleep;
+	eat_time  = philo->data->time_to_eat;
 	message("is sleeping", philo);
-	ft_usleep(philo->data->time_to_sleep, philo);
+	ft_usleep((sleep_time * 1000), philo);
 	message("is thinking", philo);
+	ft_usleep(((die_time - sleep_time - eat_time) / 4) * 1000, philo);
 }
 
 void	*check_if_dead(void *arg)
@@ -97,13 +108,13 @@ void	*routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->action);
-/* 		pthread_mutex_lock(&philo->data->meals_qty);
-		if (philo->data->num_times_to_eat > 0 &&  philo->meals_eaten == philo->data->num_times_to_eat)
+		pthread_mutex_lock(&philo->data->meals_qty);
+		if (philo->meals_eaten == philo->data->num_times_to_eat)
 		{
 			pthread_mutex_unlock(&philo->data->meals_qty);
 			break ;
 		}
-		pthread_mutex_unlock(&philo->data->meals_qty); */
+		pthread_mutex_unlock(&philo->data->meals_qty);
 		eating(philo);
 		sleeping(philo);
 	}
