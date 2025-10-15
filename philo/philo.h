@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:53:53 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/09 16:29:19 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 15:34:05 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,5 @@ void			take_forks(t_philo *philo);
 void			*check_if_dead(void *arg);
 void			destroy_all_mutexes(t_data *data, t_philo *philo);
 void			one_philo(t_data *data, t_philo *philo);
-void			all_meals(t_philo *philo);
-void			dead(t_philo *philo);
 
 #endif

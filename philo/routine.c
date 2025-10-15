@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:32:15 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/15 13:19:33 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 15:33:37 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->meal);
 	philo->last_meal = get_current_time();
 	pthread_mutex_unlock(&philo->meal);
-	//ft_usleep((philo->data->time_to_eat), philo);
 	usleep(philo->data->time_to_eat * 1000);
 	pthread_mutex_lock(&philo->data->meals_qty);
 	philo->meals_eaten++;
@@ -45,17 +44,18 @@ void	take_forks(t_philo *philo)
 		message("has taken a fork", philo);
 	}
 }
-/* 
 static void	sleeping(t_philo *philo)
 {
+	/* 
 	message("is sleeping", philo);
 	//ft_usleep(philo->data->time_to_sleep, philo);
 	usleep(philo->data->time_to_sleep * 1000);
 	message("is thinking", philo);
 	usleep(100 * 1000);
-	//ft_usleep(100, philo);
-} */
-
+	//ft_usleep(100, philo); */
+	message("is sleeping", philo);
+	usleep(philo->data->time_to_sleep * 1000);
+}
 void	*check_if_dead(void *arg)
 {
 	t_philo	*philo;
@@ -64,13 +64,6 @@ void	*check_if_dead(void *arg)
 	philo = (t_philo*)arg;
 	while (1)
 	{
-/* 		pthread_mutex_lock(&philo->data->action);
-		if (philo->data->philo_died)
-		{
-			pthread_mutex_unlock(&philo->data->action);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->data->action); */
 		i = -1;
 		while (++i < philo->data->number_of_philos)
 		{
@@ -90,7 +83,25 @@ void	*check_if_dead(void *arg)
 	}
 	return (NULL);
 }
+static int	is_dead(t_philo *philo)
+{
+	int	dead;
+	
+	pthread_mutex_lock(&philo->data->action);
+	dead = philo->data->philo_died;
+	pthread_mutex_unlock(&philo->data->action);
+	return (dead);
+}
+static int	all_meals(t_philo *philo)
+{
+	int	meals_done;
 
+	meals_done = 0;
+	pthread_mutex_lock(&philo->data->meals_qty);
+	meals_done = (philo->meals_eaten == philo->data->num_times_to_eat);
+	pthread_mutex_unlock(&philo->data->meals_qty);
+	return (meals_done);
+}
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -100,31 +111,32 @@ void	*routine(void *arg)
 		usleep(100);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->data->action);
-		int dead = philo->data->philo_died;
-		pthread_mutex_unlock(&philo->data->action);
-		if (dead)
+		if (is_dead(philo))
 			break;
-		pthread_mutex_lock(&philo->data->meals_qty);
-		int meals_done = (philo->meals_eaten == philo->data->num_times_to_eat);
-		pthread_mutex_unlock(&philo->data->meals_qty);
-		if (meals_done)
+		if (all_meals(philo))
 		{
 			pthread_mutex_lock(&philo->data->action);
 			philo->data->philo_died = 1;
 			pthread_mutex_unlock(&philo->data->action);
 		}
 		eating(philo);
-		if (dead)
+		if (is_dead(philo))
 			break;
-		message("is sleeping", philo);
-		//ft_usleep(philo->data->time_to_sleep, philo);
-		usleep(philo->data->time_to_sleep * 1000);
-		if (dead)
+		sleeping(philo);
+		if (is_dead(philo))
 			break;
 		message("is thinking", philo);
-		usleep(100 * 1000);
-			//sleeping(philo);
+		usleep(1000);
 	}
 	return (NULL);
 }
+
+/*	pthread_mutex_lock(&philo->data->action);
+	int dead = philo->data->philo_died;
+	pthread_mutex_unlock(&philo->data->action); */
+
+/* pthread_mutex_lock(&philo->data->meals_qty);
+	int meals_done = (philo->meals_eaten == philo->data->num_times_to_eat);
+	pthread_mutex_unlock(&philo->data->meals_qty); */
+
+
