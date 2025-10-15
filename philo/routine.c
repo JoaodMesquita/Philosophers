@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 10:32:15 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/15 12:59:16 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 13:19:33 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,15 @@ void	*routine(void *arg)
 		pthread_mutex_unlock(&philo->data->action);
 		if (dead)
 			break;
-		/* pthread_mutex_lock(&philo->data->meals_qty);
+		pthread_mutex_lock(&philo->data->meals_qty);
 		int meals_done = (philo->meals_eaten == philo->data->num_times_to_eat);
-		pthread_mutex_unlock(&philo->data->meals_qty); */
-/* 		if (meals_done)
+		pthread_mutex_unlock(&philo->data->meals_qty);
+		if (meals_done)
 		{
 			pthread_mutex_lock(&philo->data->action);
 			philo->data->philo_died = 1;
 			pthread_mutex_unlock(&philo->data->action);
-		}  */
+		}
 		eating(philo);
 		if (dead)
 			break;
