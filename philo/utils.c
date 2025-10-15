@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/08 12:33:17 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 11:37:35 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,12 @@ int	ft_atoi(const char *nptr)
 
 void	ft_usleep(long miliseconds, t_philo *philo)
 {
-		pthread_mutex_lock(&philo->data->action);
-		if (philo->data->philo_died)
-		{
-			pthread_mutex_unlock(&philo->data->action);
-			return ;
-		}
-		pthread_mutex_unlock(&philo->data->action);
-		usleep(miliseconds);
+	long	start_time;
+	
+	start_time = get_current_time();
+	(void)philo;
+	while((get_current_time() - start_time) < miliseconds)
+			usleep(100);
 }
 
 long int	get_current_time(void)
@@ -74,16 +72,15 @@ void	destroy_all_mutexes(t_data *data, t_philo *philo)
 {
 	int	i;
 
-	i = 0;
-	while (i < data->number_of_philos)
-	{
+	i = -1;
+	while (++i < data->number_of_philos)
 		pthread_mutex_destroy(&data->forks[i]);
-		i++;
-	}
+	i = -1;
+	while (++i < data->number_of_philos)
+		pthread_mutex_destroy(&philo[i].meal);
 	free(data->forks);
-	pthread_mutex_destroy(&philo->meal);
-	free(philo);
 	pthread_mutex_destroy(&data->action);
 	pthread_mutex_destroy(&data->meals_qty);
 	pthread_mutex_destroy(&data->message);
+	free(philo);
 }
