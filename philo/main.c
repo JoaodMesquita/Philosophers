@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 18:34:31 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/15 09:58:18 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 15:50:22 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 	t_philo	*philo;
-	
+
 	if (!check_args(ac, av))
 		exit(1);
 	init_data(ac, av, &data);

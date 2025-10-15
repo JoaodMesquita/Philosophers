@@ -6,13 +6,13 @@
 #    By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/23 18:32:27 by jpmesquita        #+#    #+#              #
-#    Updated: 2025/10/07 14:00:52 by jpmesquita       ###   ########.fr        #
+#    Updated: 2025/10/15 16:09:52 by jpmesquita       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-SRC = main.c utils.c parsing.c init.c routine.c
+SRC = main.c utils.c parsing.c init.c routine.c meals_and_death.c
 
 OBJS := $(SRC:%.c=%.o)
 

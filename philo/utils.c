@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 20:05:23 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/15 11:37:35 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 16:08:04 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,12 @@ int	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-void	ft_usleep(long miliseconds, t_philo *philo)
-{
-	long	start_time;
-	
-	start_time = get_current_time();
-	(void)philo;
-	while((get_current_time() - start_time) < miliseconds)
-			usleep(100);
-}
-
-long int	get_current_time(void)
+long int	current_time(void)
 {
 	struct timeval	current_time;
-	
+
 	gettimeofday(&current_time, NULL);
-	return((current_time.tv_sec * 1000) + current_time.tv_usec / 1000); 
+	return ((current_time.tv_sec * 1000) + current_time.tv_usec / 1000);
 }
 
 void	message(char *str, t_philo *philo)
@@ -61,13 +51,14 @@ void	message(char *str, t_philo *philo)
 	size_t	timestamp;
 
 	pthread_mutex_lock(&philo->data->action);
-	timestamp = get_current_time() - philo->data->start_time;
+	timestamp = current_time() - philo->data->start_time;
 	pthread_mutex_lock(&philo->data->message);
 	if (!philo->data->philo_died)
 		printf("%ld %d %s\n", timestamp, philo->id, str);
 	pthread_mutex_unlock(&philo->data->message);
 	pthread_mutex_unlock(&philo->data->action);
 }
+
 void	destroy_all_mutexes(t_data *data, t_philo *philo)
 {
 	int	i;

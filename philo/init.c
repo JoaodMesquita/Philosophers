@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/24 12:02:50 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/15 10:45:04 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/15 16:08:39 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_philos(t_philo *philo, t_data *data)
 	{
 		philo[i].id = i + 1;
 		philo[i].meals_eaten = 0;
-		philo[i].last_meal = get_current_time();
+		philo[i].last_meal = current_time();
 		philo[i].left_fork = &data->forks[i];
 		philo[i].right_fork = &data->forks[(i + 1) % data->number_of_philos];
 		philo[i].data = data;
@@ -62,7 +62,7 @@ void	thread_init(t_data *data, t_philo *philo)
 {
 	int	i;
 
-	data->start_time = get_current_time();
+	data->start_time = current_time();
 	if (data->number_of_philos == 1)
 	{
 		one_philo(data, philo);
@@ -83,7 +83,7 @@ void	one_philo(t_data *data, t_philo *philo)
 	pthread_mutex_lock(philo->left_fork);
 	message("has taken a fork", philo);
 	pthread_mutex_unlock(philo->left_fork);
-	ft_usleep(philo->data->time_to_die, philo);
+	usleep(philo->data->time_to_die * 1000);
 	message("died", &philo[0]);
 	pthread_mutex_lock(&data->action);
 	data->philo_died = 1;
