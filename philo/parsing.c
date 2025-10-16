@@ -6,7 +6,7 @@
 /*   By: jpmesquita <jpmesquita@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 22:48:14 by jpmesquita        #+#    #+#             */
-/*   Updated: 2025/10/08 09:44:10 by jpmesquita       ###   ########.fr       */
+/*   Updated: 2025/10/16 11:48:53 by jpmesquita       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	number_of_meals(int ac, char **av)
 	if (ac == 6)
 	{
 		meals_amount = ft_atoi(av[5]);
-		if (meals_amount < 0)
+		if (meals_amount < 0 || meals_amount > 2147483647)
 			return (0);
 	}
 	return (1);
