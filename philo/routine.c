@@ -103,11 +103,3 @@ void	*routine(void *arg)
 	}
 	return (NULL);
 }
-
-/*	pthread_mutex_lock(&philo->data->action);
-	int dead = philo->data->philo_died;
-	pthread_mutex_unlock(&philo->data->action); */
-
-/* pthread_mutex_lock(&philo->data->meals_qty);
-	int meals_done = (philo->meals_eaten == philo->data->num_times_to_eat);
-	pthread_mutex_unlock(&philo->data->meals_qty); */
