@@ -49,6 +49,8 @@ static void	sleeping(t_philo *philo)
 {
 	message("is sleeping", philo);
 	usleep(philo->data->time_to_sleep * 1000);
+	message("is thinking", philo);
+	usleep(1000);
 }
 
 void	*check_if_dead(void *arg)
@@ -97,13 +99,7 @@ void	*routine(void *arg)
 			pthread_mutex_unlock(&philo->data->action);
 		}
 		eating(philo);
-		if (is_dead(philo))
-			break ;
 		sleeping(philo);
-		if (is_dead(philo))
-			break ;
-		message("is thinking", philo);
-		usleep(1000);
 	}
 	return (NULL);
 }
